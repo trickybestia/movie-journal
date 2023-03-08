@@ -10,3 +10,14 @@ body,
   height: 100%;
   overflow: hidden;
 }
+
+.pure-menu,
+.pure-menu-children {
+  background-color: #dddddd;
+}
+
+.pure-menu-link {
+  color: #333;
+
+  padding: 0.25em 0.5em;
+}
