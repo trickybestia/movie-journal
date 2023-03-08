@@ -1,0 +1,21 @@
+@use "../../custom.scss";
+
+.StatusBar {
+  height: 1.5em;
+  line-height: 1.5em;
+
+  background-color: custom.$statusbar-backround-color;
+
+  padding: 0 .5em;
+
+  div {
+    display: inline-block;
+    color: #222;
+  }
+
+  div:not(:last-child) {
+    margin-right: .5em;
+    padding-right: .5em;
+    border-right: 1px black solid;
+  }
+}

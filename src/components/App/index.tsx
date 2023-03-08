@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import ToolBar, { Props as ToolBarProps } from "./ToolBar";
+import StatusBar, { Props as StatusBarProps } from "../StatusBar";
+import ToolBar, { Props as ToolBarProps } from "../ToolBar";
+import styles from "./index.module.scss";
 
 const getToolBarButtons = (
   compactView: boolean,
@@ -34,20 +36,39 @@ const getToolBarButtons = (
   }
 ];
 
+const getStatusBarProps = (): StatusBarProps => ({
+  fileName: "pog",
+  changedSinceLastSave: true,
+  watchedTitles: 100,
+  totalTitles: 150,
+  watchedEpisodes: 500,
+  totalEpisodes: 700
+});
+
 const App: React.FC = () => {
   const [compactView, setCompactView] = useState(() => false);
   const [hideWatched, setHideWatched] = useState(() => false);
 
-  const toolbarButtons = getToolBarButtons(
+  const toolBarButtons = getToolBarButtons(
     compactView,
     setCompactView,
     hideWatched,
     setHideWatched
   );
 
+  const statusBarProps = getStatusBarProps();
+
   return (
-    <div>
-      <ToolBar buttons={toolbarButtons} />
+    <div className={styles.App}>
+      <header>
+        <ToolBar buttons={toolBarButtons} />
+      </header>
+      <main style={{ height: "auto" }}>
+        <div style={{ height: "100%" }}></div>
+      </main>
+      <footer>
+        <StatusBar {...statusBarProps} />
+      </footer>
     </div>
   );
 };
