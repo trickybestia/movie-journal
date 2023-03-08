@@ -18,6 +18,7 @@ const MenuItem: React.FC<Props> = (props: Props) => {
         className={props.kind === "checkbox" ? "" : styles.collapsed}
         type="checkbox"
         checked={props.kind === "checkbox" ? props.checked : false}
+        readOnly={true}
       />
       <p>{props.title}</p>
     </li>
