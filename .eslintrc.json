@@ -24,7 +24,8 @@
     "prettier/prettier": [
       "error",
       {
-        "trailingComma": "none"
+        "trailingComma": "none",
+        "arrowParens": "avoid"
       }
     ],
     "@typescript-eslint/no-empty-function": "off",
