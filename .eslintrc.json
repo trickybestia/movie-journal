@@ -25,7 +25,8 @@
       "error",
       {
         "trailingComma": "none",
-        "arrowParens": "avoid"
+        "arrowParens": "avoid",
+        "printWidth": 120
       }
     ],
     "@typescript-eslint/no-empty-function": "off",
