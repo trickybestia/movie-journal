@@ -1,6 +1,12 @@
+import produce from "immer";
+import { Model, Movie, Season } from "model";
+import ParentState from "parent_state";
 import React, { useState } from "react";
-import StatusBar, { Props as StatusBarProps } from "../StatusBar";
+import CompactMovieView from "../MovieView/CompactMovieView";
+import FullMovieView from "../MovieView/FullMovieView";
+import StatusBar from "../StatusBar";
 import ToolBar, { Props as ToolBarProps } from "../ToolBar";
+
 import styles from "./index.module.scss";
 
 const getToolBarButtons = (
@@ -36,35 +42,72 @@ const getToolBarButtons = (
   }
 ];
 
-const getStatusBarProps = (): StatusBarProps => ({
-  fileName: "pog",
-  changedSinceLastSave: true,
-  watchedTitles: 100,
-  totalTitles: 150,
-  watchedEpisodes: 500,
-  totalEpisodes: 700
+const createSeason = (title: string): Season => ({
+  title: title,
+  image: undefined,
+  episodes: [true, true, true, true, false]
 });
 
+const createMovie = (title: string): Movie => {
+  const seasons = [];
+
+  for (let i = 0; i != 3; i++) {
+    seasons.push(createSeason(`Сезон ${i + 1}`));
+  }
+
+  return {
+    title: title,
+    seasons: seasons
+  };
+};
+
+const createModel = (): Model => {
+  const model: Model = { movies: [] };
+
+  for (let i = 0; i < 10; i++) {
+    model.movies.push(createMovie((i + 1).toString()));
+  }
+
+  return model;
+};
+
 const App: React.FC = () => {
+  const [model, setModel] = useState(createModel);
+  const [modelFileName, setModelFileName] = useState("Новый файл");
+  const [changedSinceLastSave, setChangedSinceLastSave] = useState(true);
   const [compactView, setCompactView] = useState(() => false);
   const [hideWatched, setHideWatched] = useState(() => false);
 
-  const toolBarButtons = getToolBarButtons(
-    compactView,
-    setCompactView,
-    hideWatched,
-    setHideWatched
-  );
+  const toolBarButtons = getToolBarButtons(compactView, setCompactView, hideWatched, setHideWatched);
 
-  const statusBarProps = getStatusBarProps();
+  const statusBarProps = {
+    fileName: modelFileName,
+    changedSinceLastSave: changedSinceLastSave,
+    watchedTitles: 100,
+    totalTitles: 150,
+    watchedEpisodes: 500,
+    totalEpisodes: 700
+  };
+
+  const MovieView = compactView ? CompactMovieView : FullMovieView;
 
   return (
     <div className={styles.App}>
       <header>
         <ToolBar buttons={toolBarButtons} />
       </header>
-      <main style={{ height: "auto" }}>
-        <div style={{ height: "100%" }}></div>
+      <main>
+        <MovieView
+          movies={
+            new ParentState(model.movies, newMovies =>
+              setModel(
+                produce(model => {
+                  model.movies = newMovies;
+                })
+              )
+            )
+          }
+        />
       </main>
       <footer>
         <StatusBar {...statusBarProps} />

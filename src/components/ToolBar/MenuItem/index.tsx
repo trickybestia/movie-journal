@@ -1,4 +1,5 @@
 import React from "react";
+
 import styles from "./index.module.scss";
 
 type Props = { title: string; onClick: VoidFunction } & (
@@ -10,10 +11,7 @@ type Props = { title: string; onClick: VoidFunction } & (
 
 const MenuItem: React.FC<Props> = (props: Props) => {
   return (
-    <li
-      className={`${styles.MenuItem} pure-menu-item pure-menu-link`}
-      onClick={props.onClick}
-    >
+    <li className={`${styles.MenuItem} pure-menu-item pure-menu-link`} onClick={props.onClick}>
       <input
         className={props.kind === "checkbox" ? "" : styles.collapsed}
         type="checkbox"

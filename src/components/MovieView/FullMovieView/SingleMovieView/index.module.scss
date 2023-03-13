@@ -1,0 +1,30 @@
+.SingleMovieView {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+
+  .Image {
+    width: 7em;
+    height: 10em;
+
+    background: repeating-linear-gradient(45deg, black 0 15px, white 15px 30px)
+  }
+
+  .Info {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    flex-grow: 1;
+
+    .Seasons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+
+      flex-grow: 1;
+
+      overflow: auto;
+    }
+  }
+}

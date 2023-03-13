@@ -1,5 +1,6 @@
 import React from "react";
 import MenuItem, { Props as MenuItemProps } from "../MenuItem";
+
 import styles from "./index.module.scss";
 
 type Props = {
@@ -9,12 +10,10 @@ type Props = {
 
 const ToolBarItem: React.FC<Props> = (props: Props) => {
   return (
-    <li
-      className={`${styles.ToolBarItem} pure-menu-item pure-menu-allow-hover`}
-    >
+    <li className={`${styles.ToolBarItem} pure-menu-item pure-menu-allow-hover`}>
       <p className="pure-menu-link">{props.title}</p>
       <ul className="pure-menu-children">
-        {props.items.map((item) => (
+        {props.items.map(item => (
           <MenuItem key={item.title} {...item} />
         ))}
       </ul>

@@ -5,5 +5,8 @@
 
   main {
     flex-grow: 1;
+    overflow: auto;
+
+    padding: 1em; // use padding instead of margin to display scrollbar correctly
   }
 }

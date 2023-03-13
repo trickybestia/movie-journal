@@ -9,7 +9,7 @@ const ToolBar: React.FC<Props> = (props: Props) => {
   return (
     <div className={`pure-menu pure-menu-horizontal`}>
       <ul className="pure-menu-list">
-        {props.buttons.map((button) => (
+        {props.buttons.map(button => (
           <ToolBarItem key={button.title} {...button} />
         ))}
       </ul>
