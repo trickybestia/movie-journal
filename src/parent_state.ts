@@ -1,5 +1,5 @@
-import produce, { Draft } from "immer";
 import { Dispatch } from "react";
+import produce, { Draft } from "immer";
 
 class ParentState<S> {
   public readonly state: S;

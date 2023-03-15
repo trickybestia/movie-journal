@@ -1,9 +1,11 @@
 import React from "react";
-import SingleMovieView from "./SingleMovieView";
-import ParentState from "parent_state";
 import { Movie } from "model";
-import { MovieView, Props } from "..";
 import { getMovieStats } from "model/stats";
+import ParentState from "parent_state";
+
+import { MovieView, Props } from "..";
+
+import SingleMovieView from "./SingleMovieView";
 
 import styles from "./index.module.scss";
 

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { MovieView, Props } from "..";
 
 import styles from "./index.module.scss";

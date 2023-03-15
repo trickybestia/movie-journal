@@ -1,4 +1,5 @@
 import React from "react";
+
 import MenuItem, { Props as MenuItemProps } from "../MenuItem";
 
 import styles from "./index.module.scss";

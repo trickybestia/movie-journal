@@ -1,13 +1,14 @@
+import React, { useState } from "react";
 import produce from "immer";
 import { Model, Movie, Season } from "model";
 import { getModelStats } from "model/stats";
 import ParentState from "parent_state";
-import React, { useState } from "react";
 import { loadModel, saveModel } from "utils/saveModel";
-import CompactMovieView from "../MovieView/CompactMovieView";
-import FullMovieView from "../MovieView/FullMovieView";
-import StatusBar from "../StatusBar";
-import ToolBar, { Props as ToolBarProps } from "../ToolBar";
+
+import CompactMovieView from "components/MovieView/CompactMovieView";
+import FullMovieView from "components/MovieView/FullMovieView";
+import StatusBar from "components/StatusBar";
+import ToolBar, { Props as ToolBarProps } from "components/ToolBar";
 
 import styles from "./index.module.scss";
 

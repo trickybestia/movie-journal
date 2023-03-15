@@ -1,5 +1,5 @@
-import { ModelStats } from "model/stats";
 import React from "react";
+import { ModelStats } from "model/stats";
 
 import styles from "./index.module.scss";
 

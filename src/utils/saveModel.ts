@@ -28,4 +28,4 @@ const loadModel = (callback: (model: Model, fileName: string) => void) => {
   };
 };
 
-export { saveModel, loadModel };
+export { loadModel, saveModel };

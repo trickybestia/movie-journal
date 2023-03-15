@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Movie } from "model";
 import ParentState from "parent_state";
+
 import SeasonView from "./SeasonView";
 
 import styles from "./index.module.scss";
