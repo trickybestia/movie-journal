@@ -1,3 +1,4 @@
+import { ModelStats } from "model/stats";
 import React from "react";
 
 import styles from "./index.module.scss";
@@ -5,24 +6,21 @@ import styles from "./index.module.scss";
 type Props = {
   fileName: string;
   changedSinceLastSave: boolean;
-  watchedTitles: number;
-  totalTitles: number;
-  watchedEpisodes: number;
-  totalEpisodes: number;
+  modelStats: ModelStats;
 };
 
-const StatusBar: React.FC<Props> = (props: Props) => {
+const StatusBar: React.FC<Props> = ({ fileName, changedSinceLastSave, modelStats }: Props) => {
   return (
     <div className={styles.StatusBar}>
       <div>
-        {props.fileName}
-        {props.changedSinceLastSave ? "*" : ""}
+        {fileName}
+        {changedSinceLastSave ? " *" : ""}
       </div>
       <div>
-        {props.watchedTitles} / {props.totalTitles} просмотрено/тайтлов
+        {modelStats.watchedMovies} / {modelStats.totalMovies} просмотрено/тайтлов
       </div>
       <div>
-        {props.watchedEpisodes} / {props.totalEpisodes} просмотрено/серий
+        {modelStats.watchedEpisodes} / {modelStats.totalEpisodes} просмотрено/серий
       </div>
     </div>
   );
