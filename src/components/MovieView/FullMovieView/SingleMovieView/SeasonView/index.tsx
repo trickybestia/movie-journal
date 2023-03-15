@@ -1,11 +1,11 @@
 import React from "react";
-import { Season } from "model";
+import { SeasonType } from "model";
 import ParentState from "parent_state";
 
 import styles from "./index.module.scss";
 
 type Props = {
-  season: ParentState<Season>;
+  season: ParentState<SeasonType>;
 };
 
 const SeasonView: React.FC<Props> = ({ season }: Props) => {

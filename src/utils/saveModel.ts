@@ -1,13 +1,14 @@
 import { saveAs } from "file-saver";
-import { Model } from "model";
+import { isRight } from "fp-ts/lib/Either";
+import { Model, ModelType } from "model";
 
-const saveModel = (model: Model, fileName: string) => {
+const saveModel = (model: ModelType, fileName: string) => {
   const blob = new Blob([JSON.stringify(model)], { type: "text/plain;charset=utf-8" });
 
   saveAs(blob, fileName + ".json");
 };
 
-const loadModel = (callback: (model: Model, fileName: string) => void) => {
+const loadModel = (callback: (model: ModelType, fileName: string) => void) => {
   const fileInput = document.createElement("input");
 
   fileInput.setAttribute("type", "file");
@@ -21,7 +22,11 @@ const loadModel = (callback: (model: Model, fileName: string) => void) => {
       file
         .text()
         .then(text => {
-          callback(JSON.parse(text) as Model, file.name);
+          const model = Model.decode(JSON.parse(text));
+
+          if (isRight(model)) {
+            callback(model.right, file.name);
+          }
         })
         .catch(reason => console.error(reason));
     }

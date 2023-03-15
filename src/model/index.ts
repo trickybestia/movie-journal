@@ -1,19 +1,32 @@
-type Model = {
-  movies: Movie[];
-};
+import * as t from "io-ts";
 
-type Movie = {
-  title: string;
-  seasons: Season[];
-};
+const Season = t.exact(
+  t.type({
+    title: t.string,
+    /**
+     * Base64-encoded image with mime type.
+     */
+    image: t.union([t.string, t.undefined]),
+    episodes: t.array(t.boolean)
+  })
+);
 
-type Season = {
-  title: string;
-  /**
-   * Base64-encoded image with mime type.
-   */
-  image: string | undefined;
-  episodes: boolean[];
-};
+const Movie = t.exact(
+  t.type({
+    title: t.string,
+    seasons: t.array(Season)
+  })
+);
 
-export type { Model, Movie, Season };
+const Model = t.exact(
+  t.type({
+    movies: t.array(Movie)
+  })
+);
+
+type SeasonType = t.TypeOf<typeof Season>;
+type MovieType = t.TypeOf<typeof Movie>;
+type ModelType = t.TypeOf<typeof Model>;
+
+export { Model, Movie, Season };
+export type { ModelType, MovieType, SeasonType };

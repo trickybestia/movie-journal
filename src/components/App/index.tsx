@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import produce from "immer";
-import { Model, Movie, Season } from "model";
+import { ModelType, MovieType, SeasonType } from "model";
 import { getModelStats } from "model/stats";
 import ParentState from "parent_state";
 import { loadModel, saveModel } from "utils/saveModel";
@@ -14,13 +14,13 @@ import styles from "./index.module.scss";
 
 const NEW_MODEL_FILE_NAME = "Новый файл";
 
-const createSeason = (title: string): Season => ({
+const createSeason = (title: string): SeasonType => ({
   title: title,
   image: undefined,
   episodes: [true, true, true, true, false]
 });
 
-const createMovie = (title: string): Movie => {
+const createMovie = (title: string): MovieType => {
   const seasons = [];
 
   for (let i = 0; i != 3; i++) {
@@ -33,8 +33,8 @@ const createMovie = (title: string): Movie => {
   };
 };
 
-const createModel = (): Model => {
-  const model: Model = { movies: [] };
+const createModel = (): ModelType => {
+  const model: ModelType = { movies: [] };
 
   for (let i = 0; i < 10; i++) {
     model.movies.push(createMovie((i + 1).toString()));

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Movie } from "model";
+import { MovieType } from "model";
 import ParentState from "parent_state";
 
 import SeasonView from "./SeasonView";
@@ -7,7 +7,7 @@ import SeasonView from "./SeasonView";
 import styles from "./index.module.scss";
 
 type Props = {
-  movie: ParentState<Movie>;
+  movie: ParentState<MovieType>;
 };
 
 const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {

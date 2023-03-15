@@ -1,5 +1,5 @@
 import React from "react";
-import { Movie } from "model";
+import { MovieType } from "model";
 import { getMovieStats } from "model/stats";
 import ParentState from "parent_state";
 
@@ -9,7 +9,7 @@ import SingleMovieView from "./SingleMovieView";
 
 import styles from "./index.module.scss";
 
-const isWatched = (movie: Movie): boolean => {
+const isWatched = (movie: MovieType): boolean => {
   const stats = getMovieStats(movie);
 
   return stats.totalEpisodes === stats.watchedEpisodes;

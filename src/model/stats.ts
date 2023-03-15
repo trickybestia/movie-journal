@@ -1,4 +1,4 @@
-import { Model, Movie } from ".";
+import { ModelType, MovieType } from "model";
 
 type ModelStats = {
   watchedMovies: number;
@@ -12,7 +12,7 @@ type MovieStats = {
   totalEpisodes: number;
 };
 
-const getMovieStats = (movie: Movie): MovieStats => {
+const getMovieStats = (movie: MovieType): MovieStats => {
   const stats: MovieStats = {
     watchedEpisodes: 0,
     totalEpisodes: 0
@@ -31,7 +31,7 @@ const getMovieStats = (movie: Movie): MovieStats => {
   return stats;
 };
 
-const getModelStats = (model: Model): ModelStats => {
+const getModelStats = (model: ModelType): ModelStats => {
   const stats: ModelStats = {
     watchedMovies: 0,
     totalMovies: model.movies.length,
