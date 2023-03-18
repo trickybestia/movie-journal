@@ -1,0 +1,41 @@
+.MoviePreview {
+  .Image {
+    width: 7em;
+    height: 10em;
+  }
+
+  .ImageEmpty {
+    background: repeating-linear-gradient(45deg, black 0 15px, white 15px 30px);
+  }
+
+  .MovieSelector {
+    top: 1px;
+
+    display: flex;
+
+    flex-direction: row;
+
+    gap: 0.5em;
+
+    .MovieSelectorItem {
+      box-sizing: border-box;
+
+      border: 2px black solid;
+
+      padding: 2px;
+
+      .MovieSelectorItemDot {
+        width: 0.4em;
+        height: 0.4em;
+      }
+
+      .MovieSelectorItemSelectedDot {
+        background-color: black;
+      }
+    }
+
+    .MovieSelectorItemMain {
+      border: 2px red solid;
+    }
+  }
+}

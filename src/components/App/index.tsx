@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import produce from "immer";
 import { ModelType, MovieType, SeasonType } from "model";
 import { getModelStats } from "model/stats";
-import ParentState from "parent_state";
-import { loadModel, saveModel } from "utils/saveModel";
+import ParentState from "parent-state";
+import { BlobUrlMapper, BlobUrlMapperContext } from "utils/blob-url-mapper";
+import { loadModel, saveModel } from "utils/save-model";
+import useStateWithSetCallback from "utils/use-context-with-set-callback";
 
 import CompactMovieView from "components/MovieView/CompactMovieView";
 import FullMovieView from "components/MovieView/FullMovieView";
@@ -29,7 +31,8 @@ const createMovie = (title: string): MovieType => {
 
   return {
     title: title,
-    seasons: seasons
+    seasons: seasons,
+    mainPreviewSeasonIndex: undefined
   };
 };
 
@@ -44,7 +47,23 @@ const createModel = (): ModelType => {
 };
 
 const App: React.FC = () => {
-  const [model, setModel] = useState(createModel);
+  const [blobUrlMapper] = useState(() => new BlobUrlMapper());
+
+  const setModelCallback = (model: ModelType) => {
+    const previews: Set<Blob> = new Set();
+
+    model.movies.forEach(movie =>
+      movie.seasons.forEach(season => {
+        if (season.image !== undefined) {
+          previews.add(season.image.blob);
+        }
+      })
+    );
+
+    blobUrlMapper.update(previews);
+  };
+
+  const [model, setModel] = useStateWithSetCallback(createModel, setModelCallback);
   const [modelFileName, setModelFileName] = useState(NEW_MODEL_FILE_NAME);
   const [changedSinceLastSave, setChangedSinceLastSave] = useState(true);
   const [compactView, setCompactView] = useState(() => false);
@@ -114,18 +133,20 @@ const App: React.FC = () => {
         <ToolBar buttons={toolBarButtons} />
       </header>
       <main>
-        <MovieView
-          movies={
-            new ParentState(model.movies, newMovies =>
-              setModel(
-                produce(model => {
-                  model.movies = newMovies;
-                })
+        <BlobUrlMapperContext.Provider value={blobUrlMapper}>
+          <MovieView
+            movies={
+              new ParentState(model.movies, newMovies =>
+                setModel(
+                  produce(model, model => {
+                    model.movies = newMovies;
+                  })
+                )
               )
-            )
-          }
-          hideWatched={hideWatched}
-        />
+            }
+            hideWatched={hideWatched}
+          />
+        </BlobUrlMapperContext.Provider>
       </main>
       <footer>
         <StatusBar

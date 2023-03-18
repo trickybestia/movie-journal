@@ -1,6 +1,6 @@
 import React from "react";
 import { MovieType } from "model";
-import ParentState from "parent_state";
+import ParentState from "parent-state";
 
 import CompactMovieView from "./CompactMovieView";
 import FullMovieView from "./FullMovieView";

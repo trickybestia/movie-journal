@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { MovieType } from "model";
-import ParentState from "parent_state";
+import ParentState from "parent-state";
 
+import MoviePreview from "./MoviePreview";
 import SeasonView from "./SeasonView";
 
 import styles from "./index.module.scss";
@@ -11,11 +12,9 @@ type Props = {
 };
 
 const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
-  const [selectedSeasonImageIndex, setSelectedSeasonImageIndex] = useState(() => 0);
-
   return (
     <div className={styles.SingleMovieView}>
-      <img className={styles.Image} src={movie.state.seasons[selectedSeasonImageIndex]?.image}></img>
+      <MoviePreview movie={movie} />
       <div className={styles.Info}>
         <p>{movie.state.title}</p>
         <div className={styles.Seasons}>
@@ -26,6 +25,10 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
                 new ParentState(season, newSeason =>
                   movie.update(movie => {
                     movie.seasons[index] = newSeason;
+
+                    if (newSeason.image !== undefined && movie.mainPreviewSeasonIndex === undefined) {
+                      movie.mainPreviewSeasonIndex = index;
+                    }
                   })
                 )
               }

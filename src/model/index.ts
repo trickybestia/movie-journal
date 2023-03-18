@@ -1,4 +1,5 @@
 import * as t from "io-ts";
+import { blobWithData } from "utils/blob-with-data";
 
 const Season = t.exact(
   t.type({
@@ -6,7 +7,7 @@ const Season = t.exact(
     /**
      * Base64-encoded image with mime type.
      */
-    image: t.union([t.string, t.undefined]),
+    image: t.union([blobWithData, t.undefined]),
     episodes: t.array(t.boolean)
   })
 );
@@ -14,7 +15,8 @@ const Season = t.exact(
 const Movie = t.exact(
   t.type({
     title: t.string,
-    seasons: t.array(Season)
+    seasons: t.array(Season),
+    mainPreviewSeasonIndex: t.union([t.number, t.undefined])
   })
 );
 

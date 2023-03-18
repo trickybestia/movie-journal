@@ -1,7 +1,7 @@
 import React from "react";
 import { MovieType } from "model";
 import { getMovieStats } from "model/stats";
-import ParentState from "parent_state";
+import ParentState from "parent-state";
 
 import { MovieView, Props } from "..";
 
