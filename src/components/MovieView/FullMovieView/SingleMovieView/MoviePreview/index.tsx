@@ -9,10 +9,13 @@ type Props = {
   movie: ParentState<MovieType>;
 };
 
+type ImageKind = "tall" | "wide";
+
 const MoviePreview: React.FC<Props> = ({ movie }: Props) => {
   const blobUrlMapper = useContext(BlobUrlMapperContext)!;
 
   const [lastSelectedPreviewIndex, setLastSelectedPreviewIndex] = useState(movie.state.mainPreviewSeasonIndex);
+  const [imageKind, setImageKind] = useState("wide" as ImageKind);
 
   let validPreviewIndex: number | undefined = lastSelectedPreviewIndex;
 
@@ -31,10 +34,23 @@ const MoviePreview: React.FC<Props> = ({ movie }: Props) => {
 
   return (
     <div className={styles.MoviePreview}>
-      <img
-        className={`${styles.Image} ${previewImageSrc === undefined ? styles.ImageEmpty : ""}`}
-        src={previewImageSrc}
-      ></img>
+      <div
+        className={`${styles.ImageWrapper} ${imageKind === "tall" ? styles.TallImageWrapper : styles.WideImageWrapper}`}
+      >
+        <img
+          className={`${styles.Image} ${previewImageSrc === undefined ? styles.ImageEmpty : ""} ${
+            imageKind === "tall" ? styles.TallImage : styles.WideImage
+          }`}
+          onLoad={event => {
+            if (event.currentTarget.naturalWidth >= event.currentTarget.naturalHeight * 0.7) {
+              setImageKind("wide");
+            } else {
+              setImageKind("tall");
+            }
+          }}
+          src={previewImageSrc}
+        ></img>
+      </div>
       <div className={styles.MovieSelector}>
         {movie.state.seasons.map(
           (season, index) =>

@@ -1,15 +1,40 @@
 .MoviePreview {
-  .Image {
-    width: 7em;
-    height: 10em;
+  .TallImageWrapper {
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
-  .ImageEmpty {
-    background: repeating-linear-gradient(45deg, black 0 15px, white 15px 30px);
+  .WideImageWrapper {
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
+
+  .ImageWrapper {
+    width: 7em;
+    height: 10em;
+
+    .Image {
+      object-fit: fill;
+
+      min-height: 100%;
+      min-width: 100%;
+    }
+
+    .WideImage {
+      height: 100%;
+    }
+
+    .TallImage {
+      width: 100%;
+    }
+
+    .ImageEmpty {
+      background: repeating-linear-gradient(45deg, black 0 15px, white 15px 30px);
+    }
   }
 
   .MovieSelector {
-    top: 1px;
+    margin-top: 0.25em;
 
     display: flex;
 
