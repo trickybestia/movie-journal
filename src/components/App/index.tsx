@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Filter, unwatched, watched } from "filters";
 import produce from "immer";
 import { ModelType, MovieType, SeasonType } from "model";
+import { newModel } from "model/new";
 import { getModelStats } from "model/stats";
 import ParentState from "parent-state";
 import { BlobUrlMapper, BlobUrlMapperContext } from "utils/blob-url-mapper";
@@ -9,6 +11,7 @@ import useStateWithSetCallback from "utils/use-context-with-set-callback";
 
 import CompactMovieView from "components/MovieView/CompactMovieView";
 import FullMovieView from "components/MovieView/FullMovieView";
+import SidePanel from "components/SidePanel";
 import StatusBar from "components/StatusBar";
 import ToolBar, { Props as ToolBarProps } from "components/ToolBar";
 
@@ -32,12 +35,13 @@ const createMovie = (title: string): MovieType => {
   return {
     title: title,
     seasons: seasons,
-    mainPreviewSeasonIndex: undefined
+    mainPreviewSeasonIndex: undefined,
+    tags: []
   };
 };
 
 const createModel = (): ModelType => {
-  const model: ModelType = { movies: [] };
+  const model: ModelType = newModel();
 
   for (let i = 0; i < 10; i++) {
     model.movies.push(createMovie((i + 1).toString()));
@@ -67,7 +71,6 @@ const App: React.FC = () => {
   const [modelFileName, setModelFileName] = useState(NEW_MODEL_FILE_NAME);
   const [changedSinceLastSave, setChangedSinceLastSave] = useState(true);
   const [compactView, setCompactView] = useState(() => false);
-  const [hideWatched, setHideWatched] = useState(() => false);
 
   const toolBarButtons: ToolBarProps["buttons"] = [
     {
@@ -77,7 +80,7 @@ const App: React.FC = () => {
           kind: "button",
           title: "Создать",
           onClick: () => {
-            setModel({ movies: [] });
+            setModel(newModel());
             setModelFileName(NEW_MODEL_FILE_NAME);
             setChangedSinceLastSave(true);
           }
@@ -114,12 +117,6 @@ const App: React.FC = () => {
           title: "Компактный вид",
           checked: compactView,
           onClick: () => setCompactView(!compactView)
-        },
-        {
-          kind: "checkbox",
-          title: "Скрыть просмотренные",
-          checked: hideWatched,
-          onClick: () => setHideWatched(!hideWatched)
         }
       ]
     }
@@ -127,27 +124,40 @@ const App: React.FC = () => {
 
   const MovieView = compactView ? CompactMovieView : FullMovieView;
 
+  const [selectedFilters, setSelectedFilters] = useState(() => [watched, unwatched] as readonly Filter[]);
+
   return (
     <div className={styles.App}>
       <header>
         <ToolBar buttons={toolBarButtons} />
       </header>
-      <main>
-        <BlobUrlMapperContext.Provider value={blobUrlMapper}>
-          <MovieView
-            movies={
-              new ParentState(model.movies, newMovies =>
-                setModel(
-                  produce(model, model => {
-                    model.movies = newMovies;
-                  })
-                )
-              )
-            }
-            hideWatched={hideWatched}
+      <div className={styles.MainWrapper}>
+        <div className={styles.SidePanel}>
+          <SidePanel
+            tags={model.tags}
+            selectedFilters={new ParentState(selectedFilters, setSelectedFilters)}
+            addTag={tag => {}}
+            removeTag={tag => {}}
           />
-        </BlobUrlMapperContext.Provider>
-      </main>
+        </div>
+        <main>
+          <BlobUrlMapperContext.Provider value={blobUrlMapper}>
+            <MovieView
+              filters={selectedFilters}
+              movies={
+                new ParentState<readonly MovieType[]>(model.movies, newMovies =>
+                  setModel(
+                    produce(model, model => {
+                      model.movies = newMovies.slice();
+                    })
+                  )
+                )
+              }
+            />
+          </BlobUrlMapperContext.Provider>
+        </main>
+      </div>
+
       <footer>
         <StatusBar
           fileName={modelFileName}

@@ -1,3 +1,6 @@
-.SingleMovieView:not(:last-child) {
-  margin-bottom: 2em;
+.FullMovieView {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2em;
 }

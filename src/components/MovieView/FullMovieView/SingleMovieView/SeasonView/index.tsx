@@ -1,7 +1,7 @@
 import React from "react";
+import { BlobWithData } from "io-ts-types/blob-with-data";
 import { SeasonType } from "model";
 import ParentState from "parent-state";
-import { BlobWithData } from "utils/blob-with-data";
 import readFile from "utils/read-file";
 
 import styles from "./index.module.scss";

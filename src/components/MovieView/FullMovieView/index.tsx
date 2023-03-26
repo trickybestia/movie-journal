@@ -1,6 +1,4 @@
 import React from "react";
-import { MovieType } from "model";
-import { getMovieStats } from "model/stats";
 import ParentState from "parent-state";
 
 import { MovieView, Props } from "..";
@@ -9,33 +7,37 @@ import SingleMovieView from "./SingleMovieView";
 
 import styles from "./index.module.scss";
 
-const isWatched = (movie: MovieType): boolean => {
-  const stats = getMovieStats(movie);
+const FullMovieView: MovieView = ({ movies, filters }: Props) => {
+  const movieViews: JSX.Element[] = [];
 
-  return stats.totalEpisodes === stats.watchedEpisodes;
-};
+  movies.state.forEach((movie, index) => {
+    const shouldRender = () => {
+      for (let i = 0; i != filters.length; i++) {
+        if (filters[i](movie)) {
+          return true;
+        }
+      }
 
-const FullMovieView: MovieView = ({ movies, hideWatched }: Props) => {
-  return (
-    <div>
-      {movies.state.map(
-        (movie, index) =>
-          (!hideWatched || !isWatched(movie)) && (
-            <div key={index} className={styles.SingleMovieView}>
-              <SingleMovieView
-                movie={
-                  new ParentState(movie, newMovie =>
-                    movies.update(movies => {
-                      movies[index] = newMovie;
-                    })
-                  )
-                }
-              />
-            </div>
-          )
-      )}
-    </div>
-  );
+      return false;
+    };
+
+    if (shouldRender()) {
+      movieViews.push(
+        <SingleMovieView
+          key={index}
+          movie={
+            new ParentState(movie, newMovie =>
+              movies.update(movies => {
+                movies[index] = newMovie;
+              })
+            )
+          }
+        />
+      );
+    }
+  });
+
+  return <div className={styles.FullMovieView}>{movieViews}</div>;
 };
 
 export default FullMovieView;

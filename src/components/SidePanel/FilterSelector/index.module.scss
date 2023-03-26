@@ -1,0 +1,11 @@
+@use "custom.scss";
+
+.TagSelector {
+  background-color: custom.$tagselector-background-color;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.25em;
+}

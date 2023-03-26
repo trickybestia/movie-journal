@@ -1,0 +1,19 @@
+.Section {
+  p {
+    margin-left: 0.3em;
+    display: inline;
+    vertical-align: middle;
+  }
+
+  img {
+    width: 0.75em;
+    height: 0.75em;
+
+    vertical-align: middle;
+  }
+
+  .triangleCollapsed {
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+  }
+}

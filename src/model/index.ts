@@ -1,5 +1,5 @@
 import * as t from "io-ts";
-import { blobWithData } from "utils/blob-with-data";
+import { blobWithData } from "io-ts-types/blob-with-data";
 
 const Season = t.exact(
   t.type({
@@ -16,13 +16,15 @@ const Movie = t.exact(
   t.type({
     title: t.string,
     seasons: t.array(Season),
-    mainPreviewSeasonIndex: t.union([t.number, t.undefined])
+    mainPreviewSeasonIndex: t.union([t.number, t.undefined]),
+    tags: t.array(t.string)
   })
 );
 
 const Model = t.exact(
   t.type({
-    movies: t.array(Movie)
+    movies: t.array(Movie),
+    tags: t.array(t.string)
   })
 );
 

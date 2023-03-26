@@ -3,10 +3,32 @@
   display: flex;
   flex-direction: column;
 
-  main {
+  .MainWrapper {
+    height: 0;
     flex-grow: 1;
-    overflow: auto;
 
-    padding: 1em; // use padding instead of margin to display scrollbar correctly
+    display: flex;
+    flex-direction: row;
+
+    .SidePanel {
+      overflow: auto;
+
+      resize: horizontal;
+      width: 15em;
+
+      border-right: 2px black solid;
+    }
+
+    main {
+      width: 0;
+      flex-grow: 1;
+
+      box-sizing: border-box;
+      height: 100%;
+
+      overflow: auto;
+
+      padding: 1em; // use padding instead of margin to display scrollbar correctly
+    }
   }
 }
