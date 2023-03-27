@@ -136,8 +136,31 @@ const App: React.FC = () => {
           <SidePanel
             tags={model.tags}
             selectedFilters={new ParentState(selectedFilters, setSelectedFilters)}
-            addTag={tag => {}}
-            removeTag={tag => {}}
+            addTag={tag => {
+              if (model.tags.indexOf(tag) === -1)
+                setModel(
+                  produce(model, model => {
+                    model.tags.push(tag);
+                  })
+                );
+            }}
+            removeTag={tag => {
+              const tagIndex = model.tags.indexOf(tag);
+
+              if (tagIndex !== -1) {
+                setModel(
+                  produce(model, model => {
+                    model.tags.splice(tagIndex, 1);
+
+                    model.movies.forEach(movie => {
+                      const movieTagIndex = movie.tags.indexOf(tag);
+
+                      if (movieTagIndex !== -1) movie.tags.splice(movieTagIndex, 1);
+                    });
+                  })
+                );
+              }
+            }}
           />
         </div>
         <main>

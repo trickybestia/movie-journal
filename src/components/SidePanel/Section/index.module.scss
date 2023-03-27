@@ -1,4 +1,7 @@
 .Section {
+  display: flex;
+  flex-direction: column;
+
   p {
     margin-left: 0.3em;
     display: inline;
@@ -15,5 +18,10 @@
   .triangleCollapsed {
     transform-origin: 50% 50%;
     transform: rotate(-90deg);
+  }
+
+  .children {
+    height: 0;
+    flex-grow: 1;
   }
 }

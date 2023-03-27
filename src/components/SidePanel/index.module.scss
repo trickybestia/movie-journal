@@ -1,5 +1,16 @@
 .SidePanel {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  box-sizing: content-box;
+
   padding: 1em;
 
   min-width: max-content;
+
+  >* {
+    height: 0;
+    flex-grow: 1;
+  }
 }

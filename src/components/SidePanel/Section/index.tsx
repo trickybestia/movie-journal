@@ -22,7 +22,9 @@ const Section: React.FC<Props> = ({ children, title }: Props) => {
         <p>{title}</p>
       </div>
 
-      <div hidden={isCollapsed}>{children}</div>
+      <div className={styles.children} hidden={isCollapsed}>
+        {children}
+      </div>
     </div>
   );
 };

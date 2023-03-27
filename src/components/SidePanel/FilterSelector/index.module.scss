@@ -1,11 +1,25 @@
 @use "custom.scss";
 
-.TagSelector {
+.FilterSelector {
   background-color: custom.$tagselector-background-color;
+
+  height: 100%;
 
   display: flex;
 
   flex-direction: column;
 
   gap: 0.25em;
+
+  .Filter {
+    p {
+      display: inline;
+      vertical-align: middle;
+      pointer-events: none;
+    }
+
+    input {
+      vertical-align: middle;
+    }
+  }
 }
