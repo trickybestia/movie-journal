@@ -65,6 +65,8 @@ const App: React.FC = () => {
     );
 
     blobUrlMapper.update(previews);
+
+    setChangedSinceLastSave(true);
   };
 
   const [model, setModel] = useStateWithSetCallback(createModel, setModelCallback);
