@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useState } from "react";
-import { Item, Menu, useContextMenu } from "react-contexify";
+import { Item, Menu, PredicateParams, useContextMenu } from "react-contexify";
 import { BlobWithData } from "io-ts-types/blob-with-data";
 import { SeasonType } from "model";
 import ParentState from "parent-state";
@@ -11,6 +11,10 @@ import styles from "./index.module.scss";
 type Props = {
   season: ParentState<SeasonType>;
   selected: boolean;
+};
+
+type ContextMenuProps = {
+  episodeIndex: number;
 };
 
 const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
@@ -66,10 +70,16 @@ const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
       onContextMenu={event => showContextMenu({ event: event })}
     >
       {title}
+
       <div className={styles.Episodes}>
         {season.state.episodes.map((isWatched, index) => (
           <div
             key={index}
+            onContextMenu={event => {
+              showContextMenu({ event: event, props: { episodeIndex: index } });
+
+              event.stopPropagation();
+            }}
             className={`${styles.Episode} ${isWatched ? styles.WatchedEpisode : styles.NotWatchedEpisode}`}
             onClick={() => {
               season.update(season => {
@@ -106,6 +116,27 @@ const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
           }}
         >
           Изменить название
+        </Item>
+        <Item
+          onClick={() =>
+            season.update(season => {
+              season.episodes.push(false);
+            })
+          }
+        >
+          Добавить серию
+        </Item>
+        <Item
+          disabled={({ props: menuProps }) => menuProps === undefined}
+          onClick={({ props: menuProps }: PredicateParams<ContextMenuProps>) => {
+            if (menuProps !== undefined) {
+              season.update(season => {
+                season.episodes.splice(menuProps.episodeIndex, 1);
+              });
+            }
+          }}
+        >
+          Удалить серию
         </Item>
       </Menu>
     </div>
