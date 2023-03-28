@@ -1,36 +1,56 @@
 .SeasonView {
   display: flex;
-  flex-direction: row;
-  gap: 0.5em;
 
-  align-items: center;
+  padding-left: 0.5em;
+
+  position: relative;
+
+  white-space: nowrap;
 
   .Title {
     display: inline;
+
+    margin-right: 0.5em;
   }
 
-  .SetPreviewButton {
-    display: inline-block;
+  .Episodes {
+    vertical-align: middle;
 
-    width: 1em;
-    height: 1em;
+    display: inline flex;
+    flex-direction: row;
+    gap: 0.5em;
 
-    background-color: gray;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    .Episode {
+      display: inline-block;
+
+      width: 1em;
+      height: 1em;
+    }
+
+    .NotWatchedEpisode {
+      border: 1px red solid;
+      box-sizing: border-box;
+    }
+
+    .WatchedEpisode {
+      background-color: red;
+    }
   }
+}
 
-  .Episode {
-    display: inline-block;
+.selected::before {
+  height: 100%;
+  width: 0.2em;
 
-    width: 1em;
-    height: 1em;
-  }
+  content: "";
 
-  .NotWatchedEpisode {
-    border: 1px red solid;
-    box-sizing: border-box;
-  }
+  background-color: black;
 
-  .WatchedEpisode {
-    background-color: red;
-  }
+  left: 0;
+  position: absolute;
+  display: block;
 }

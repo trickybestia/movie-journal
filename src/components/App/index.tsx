@@ -166,6 +166,7 @@ const App: React.FC = () => {
         <main>
           <BlobUrlMapperContext.Provider value={blobUrlMapper}>
             <MovieView
+              key={modelFileName + (changedSinceLastSave ? "1" : "0")}
               filters={selectedFilters}
               movies={
                 new ParentState<readonly MovieType[]>(model.movies, newMovies =>

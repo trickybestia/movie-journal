@@ -7,29 +7,20 @@ import styles from "./index.module.scss";
 
 type Props = {
   movie: ParentState<MovieType>;
+  selectedSeason: ParentState<number | undefined>;
 };
 
 type ImageKind = "tall" | "wide";
 
-const MoviePreview: React.FC<Props> = ({ movie }: Props) => {
+const MoviePreview: React.FC<Props> = ({ movie, selectedSeason }: Props) => {
   const blobUrlMapper = useContext(BlobUrlMapperContext)!;
 
-  const [lastSelectedPreviewIndex, setLastSelectedPreviewIndex] = useState(movie.state.mainPreviewSeasonIndex);
   const [imageKind, setImageKind] = useState("wide" as ImageKind);
-
-  let validPreviewIndex: number | undefined = lastSelectedPreviewIndex;
-
-  if (
-    (lastSelectedPreviewIndex === undefined && movie.state.mainPreviewSeasonIndex !== undefined) ||
-    (lastSelectedPreviewIndex !== undefined && movie.state.seasons[lastSelectedPreviewIndex] === undefined)
-  ) {
-    validPreviewIndex = movie.state.mainPreviewSeasonIndex;
-  }
 
   let previewImageSrc: string | undefined = undefined;
 
-  if (validPreviewIndex !== undefined) {
-    previewImageSrc = blobUrlMapper.getUrl(movie.state.seasons[validPreviewIndex].image!.blob);
+  if (selectedSeason.state !== undefined) {
+    previewImageSrc = blobUrlMapper.getUrl(movie.state.seasons[selectedSeason.state].image!.blob);
   }
 
   return (
@@ -60,7 +51,7 @@ const MoviePreview: React.FC<Props> = ({ movie }: Props) => {
                 className={`${styles.MovieSelectorItem} ${
                   movie.state.mainPreviewSeasonIndex === index ? styles.MovieSelectorItemMain : ""
                 }`}
-                onClick={() => setLastSelectedPreviewIndex(index)}
+                onClick={() => selectedSeason.setState(index)}
                 onDoubleClick={() =>
                   movie.update(movie => {
                     movie.mainPreviewSeasonIndex = index;
@@ -70,7 +61,7 @@ const MoviePreview: React.FC<Props> = ({ movie }: Props) => {
                 {
                   <div
                     className={`${styles.MovieSelectorItemDot} ${
-                      index === validPreviewIndex ? styles.MovieSelectorItemSelectedDot : ""
+                      index === selectedSeason.state ? styles.MovieSelectorItemSelectedDot : ""
                     }`}
                   ></div>
                 }

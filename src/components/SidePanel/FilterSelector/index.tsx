@@ -21,7 +21,7 @@ type ContextMenuProps = {
 const FilterSelector: React.FC<Props> = ({ tags, selectedFilters, addTag, removeTag }: Props) => {
   const { show: showContextMenu } = useContextMenu({ id: CONTEXT_MENU_ID });
 
-  const isContextMenuRemoveButtonHidden = ({ props }: PredicateParams<ContextMenuProps>): boolean => {
+  const isContextMenuRemoveButtonDisabled = ({ props }: PredicateParams<ContextMenuProps>): boolean => {
     return props === undefined;
   };
 
@@ -84,7 +84,7 @@ const FilterSelector: React.FC<Props> = ({ tags, selectedFilters, addTag, remove
           Создать тэг
         </Item>
         <Item
-          hidden={isContextMenuRemoveButtonHidden}
+          disabled={isContextMenuRemoveButtonDisabled}
           onClick={({
             props: menuProps // When named just props, some React's diagnostic considers it as component props and shows errors
           }: PredicateParams<ContextMenuProps>) => {
