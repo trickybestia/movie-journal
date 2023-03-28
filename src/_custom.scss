@@ -1,5 +1,7 @@
-$background-color: #eff0f1;
+$primary-background-color: #eff0f1;
+$secondary-background-color: #dddddd;
 
-$toolbar-background-color: #dddddd;
-$statusbar-backround-color: $toolbar-background-color;
-$tagselector-background-color: $background-color;
+$selection-background-color: #a4c2d6;
+
+$even-rows-background-color: #e4e5e7;
+$odd-rows-background-color: $primary-background-color;

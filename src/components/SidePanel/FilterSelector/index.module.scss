@@ -1,7 +1,7 @@
 @use "custom.scss";
 
 .FilterSelector {
-  background-color: custom.$tagselector-background-color;
+  background-color: custom.$primary-background-color;
 
   height: 100%;
 
@@ -9,9 +9,13 @@
 
   flex-direction: column;
 
-  gap: 0.25em;
+  line-height: 1.4;
 
   .Filter {
+    background-color: custom.$even-rows-background-color;
+
+    padding-left: 1em;
+
     p {
       display: inline;
       vertical-align: middle;
@@ -21,5 +25,9 @@
     input {
       vertical-align: middle;
     }
+  }
+
+  .Filter:nth-child(even) {
+    background-color: custom.$odd-rows-background-color;
   }
 }

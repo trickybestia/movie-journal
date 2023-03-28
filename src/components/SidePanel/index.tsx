@@ -3,14 +3,14 @@ import React from "react";
 import FilterSelector, { Props as FilterSelectorProps } from "./FilterSelector";
 import Section from "./Section";
 
-import styles from "./index.module.scss";
+import "./index.scss";
 
 type Props = FilterSelectorProps;
 
 const SidePanel: React.FC<Props> = (props: Props) => {
   return (
-    <div className={styles.SidePanel}>
-      <Section title="ФИЛЬТРЫ">
+    <div className="SidePanel">
+      <Section title="ФИЛЬТРЫ" className="FiltersSection">
         <FilterSelector {...props} />
       </Section>
     </div>

@@ -73,7 +73,7 @@ const FilterSelector: React.FC<Props> = ({ tags, selectedFilters, addTag, remove
           </div>
         );
       })}
-      <Menu id={CONTEXT_MENU_ID}>
+      <Menu id={CONTEXT_MENU_ID} animation={false}>
         <Item
           onClick={() => {
             const tag = prompt("Введите новый тэг");

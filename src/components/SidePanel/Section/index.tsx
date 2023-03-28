@@ -2,19 +2,19 @@ import React, { useState } from "react";
 
 import triangle from "./triangle.svg";
 
-import styles from "./index.module.scss";
+import "./index.scss";
 
-type Props = React.PropsWithChildren<{ title: string }>;
+type Props = React.PropsWithChildren<{ title: string; className?: string | undefined }>;
 
-const Section: React.FC<Props> = ({ children, title }: Props) => {
+const Section: React.FC<Props> = ({ children, title, className }: Props) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className={styles.Section}>
-      <div>
+    <div className={`Section ${className ?? ""}`}>
+      <div className="SectionHeading">
         <img
           src={triangle}
-          className={isCollapsed ? styles.triangleCollapsed : ""}
+          className={isCollapsed ? "triangleCollapsed" : ""}
           onClick={() => {
             setIsCollapsed(!isCollapsed);
           }}
@@ -22,7 +22,7 @@ const Section: React.FC<Props> = ({ children, title }: Props) => {
         <p>{title}</p>
       </div>
 
-      <div className={styles.children} hidden={isCollapsed}>
+      <div className="children" hidden={isCollapsed}>
         {children}
       </div>
     </div>

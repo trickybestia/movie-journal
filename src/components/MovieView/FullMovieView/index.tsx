@@ -23,17 +23,19 @@ const FullMovieView: MovieView = ({ movies, filters }: Props) => {
 
     if (shouldRender()) {
       movieViews.push(
-        <SingleMovieView
-          key={index}
-          movie={
-            new ParentState(movie, newMovie =>
-              movies.update(movies => {
-                movies[index] = newMovie;
-              })
-            )
-          }
-        />
+        <div key={index} className={styles.SingleMovieViewWrapper}>
+          <SingleMovieView
+            movie={
+              new ParentState(movie, newMovie =>
+                movies.update(movies => {
+                  movies[index] = newMovie;
+                })
+              )
+            }
+          />
+        </div>
       );
+      movieViews.push(<div className={styles.Separator} key={`Separator${index}`}></div>);
     }
   });
 

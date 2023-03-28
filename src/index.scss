@@ -16,16 +16,33 @@ body,
   height: 100%;
   overflow: hidden;
 
-  background-color: custom.$background-color;
+  background-color: custom.$primary-background-color;
 }
 
 .pure-menu,
 .pure-menu-children {
-  background-color: custom.$toolbar-background-color;
+  background-color: custom.$secondary-background-color;
 }
 
 .pure-menu-link {
   color: #333;
 
   padding: 0.25em 0.5em;
+}
+
+.pure-menu-active>.pure-menu-link,
+.pure-menu-link:focus,
+.pure-menu-link:hover {
+  background-color: custom.$selection-background-color;
+}
+
+.contexify {
+  --contexify-menu-radius: 0;
+  --contexify-menu-shadow: 0;
+  --contexify-activeItem-radius: 0;
+  --contexify-menu-bgColor: #{custom.$secondary-background-color};
+  --contexify-menu-padding: 2px;
+  --contexify-itemContent-padding: 4px;
+  --contexify-activeItem-bgColor: #{custom.$selection-background-color};
+  --contexify-activeItem-color: #333;
 }
