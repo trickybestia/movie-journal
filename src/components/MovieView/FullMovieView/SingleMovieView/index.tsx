@@ -60,6 +60,16 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
             <SeasonView
               key={index}
               selected={index === selectedSeason}
+              addSeason={() => {
+                movie.update(movie => {
+                  movie.seasons.push({ title: "Новый сезон", image: undefined, episodes: [] });
+                });
+              }}
+              removeSeason={() => {
+                movie.update(movie => {
+                  movie.seasons.splice(index, 1);
+                });
+              }}
               season={
                 new ParentState(season, newSeason =>
                   movie.update(movie => {

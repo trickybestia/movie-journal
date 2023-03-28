@@ -11,13 +11,15 @@ import styles from "./index.module.scss";
 type Props = {
   season: ParentState<SeasonType>;
   selected: boolean;
+  addSeason: VoidFunction;
+  removeSeason: VoidFunction;
 };
 
 type ContextMenuProps = {
   episodeIndex: number;
 };
 
-const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
+const SeasonView: React.FC<Props> = ({ season, selected, addSeason, removeSeason }: Props) => {
   const [CONTEXT_MENU_ID] = useState(() => "SeasonViewContextMenu" + (uuidv4 as () => string)());
   const { show: showContextMenu, hideAll: hideContextMenu } = useContextMenu({ id: CONTEXT_MENU_ID });
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -138,6 +140,8 @@ const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
         >
           Удалить серию
         </Item>
+        <Item onClick={() => addSeason()}>Добавить сезон</Item>
+        <Item onClick={() => removeSeason()}>Удалить сезон</Item>
       </Menu>
     </div>
   );
