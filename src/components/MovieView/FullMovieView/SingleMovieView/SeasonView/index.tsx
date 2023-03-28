@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { BlobWithData } from "io-ts-types/blob-with-data";
 import { SeasonType } from "model";
@@ -15,8 +15,8 @@ type Props = {
 
 const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
   const [CONTEXT_MENU_ID] = useState(() => "SeasonViewContextMenu" + (uuidv4 as () => string)());
-
-  const { show: showContextMenu } = useContextMenu({ id: CONTEXT_MENU_ID });
+  const { show: showContextMenu, hideAll: hideContextMenu } = useContextMenu({ id: CONTEXT_MENU_ID });
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   const setPreview = () => {
     readFile(file => {
@@ -32,12 +32,40 @@ const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
     }, "image/*");
   };
 
+  const onTitleContextMenu: MouseEventHandler<HTMLElement> = event => showContextMenu({ event: event });
+
+  let title: JSX.Element;
+
+  if (isEditingTitle) {
+    title = (
+      <input
+        className={styles.Title}
+        type="text"
+        defaultValue={season.state.title}
+        onContextMenu={onTitleContextMenu}
+        onBlur={event => {
+          season.update(season => {
+            season.title = event.currentTarget.value;
+          });
+
+          setIsEditingTitle(false);
+        }}
+      />
+    );
+  } else {
+    title = (
+      <p className={styles.Title} onContextMenu={onTitleContextMenu}>
+        {season.state.title}
+      </p>
+    );
+  }
+
   return (
     <div
       className={`${styles.SeasonView} ${selected ? styles.selected : ""}`}
       onContextMenu={event => showContextMenu({ event: event })}
     >
-      <p className={styles.Title}>{season.state.title}</p>
+      {title}
       <div className={styles.Episodes}>
         {season.state.episodes.map((isWatched, index) => (
           <div
@@ -69,6 +97,15 @@ const SeasonView: React.FC<Props> = ({ season, selected }: Props) => {
           }}
         >
           Удалить обложку
+        </Item>
+        <Item
+          disabled={isEditingTitle}
+          onClick={() => {
+            setIsEditingTitle(true);
+            hideContextMenu();
+          }}
+        >
+          Изменить название
         </Item>
       </Menu>
     </div>

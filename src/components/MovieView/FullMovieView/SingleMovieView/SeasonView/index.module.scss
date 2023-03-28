@@ -5,12 +5,12 @@
 
   position: relative;
 
-  white-space: nowrap;
-
   .Title {
     display: inline;
 
     margin-right: 0.5em;
+
+    word-break: break-all;
   }
 
   .Episodes {
