@@ -94,6 +94,15 @@ const App: React.FC = () => {
         },
         {
           kind: "button",
+          title: "Переименовать…",
+          onClick: () => {
+            const newFileName = prompt("Введите новое имя файла:", modelFileName);
+
+            if (newFileName !== null) setModelFileName(newFileName);
+          }
+        },
+        {
+          kind: "button",
           title: "Открыть…",
           onClick: () => {
             loadModel((model, fileName) => {
