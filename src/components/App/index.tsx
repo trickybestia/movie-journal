@@ -36,6 +36,7 @@ const createMovie = (title: string): MovieType => {
 
   return {
     title: title,
+    description: "",
     seasons: seasons,
     mainPreviewSeasonIndex: undefined,
     tags: []

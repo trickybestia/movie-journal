@@ -15,6 +15,7 @@ const Season = t.exact(
 const Movie = t.exact(
   t.type({
     title: t.string,
+    description: t.string,
     seasons: t.array(Season),
     mainPreviewSeasonIndex: t.union([t.number, t.undefined]),
     tags: t.array(t.string)

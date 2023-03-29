@@ -1,14 +1,22 @@
+@use "custom.scss";
+
 .SingleMovieView {
   display: flex;
   flex-direction: row;
   gap: 1em;
 
   .Info {
+    width: 0;
+    max-width: fit-content;
+    flex-grow: 1;
+
     display: flex;
     flex-direction: column;
     gap: 1em;
 
-    flex-grow: 1;
+    p {
+      word-break: break-all;
+    }
 
     .Seasons {
       margin-left: -0.5em;
@@ -20,4 +28,17 @@
       flex-grow: 1;
     }
   }
+
+  textarea {
+    width: 0;
+    flex-grow: 1;
+  }
+
+  textarea:not(.editingTextarea) {
+    border: 2px transparent solid;
+  }
+}
+
+.editingTextarea {
+  border: 2px custom.$selection-color solid;
 }

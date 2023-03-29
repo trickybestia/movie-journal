@@ -24,6 +24,7 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
   const { requestContextMenuItems } = useDynamicContextMenu();
   const [selectedSeason, setSelectedSeason] = useState(movie.state.mainPreviewSeasonIndex);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
 
   let title: JSX.Element;
 
@@ -118,6 +119,21 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
           ))}
         </div>
       </div>
+
+      <textarea
+        className={isEditingDescription ? styles.editingTextarea : ""}
+        defaultValue={movie.state.description}
+        onClick={() => {
+          setIsEditingDescription(true);
+        }}
+        onBlur={event => {
+          movie.update(movie => {
+            movie.description = event.currentTarget.value;
+          });
+
+          setIsEditingDescription(false);
+        }}
+      />
     </div>
   );
 };
