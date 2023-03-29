@@ -66,9 +66,9 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
       onContextMenu={() => {
         requestContextMenuItems([
           {
-            name: "Добавить тэг",
+            name: "Добавить метку",
             onClick: () => {
-              const tag = prompt("Введите новый тэг");
+              const tag = prompt("Введите новый метку");
 
               if (tag !== null && movie.state.tags.indexOf(tag) === -1) {
                 movie.update(movie => {

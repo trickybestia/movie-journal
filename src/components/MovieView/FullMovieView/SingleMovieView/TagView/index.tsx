@@ -20,9 +20,9 @@ const TagView: React.FC<Props> = ({ tags }: Props) => {
           onContextMenu={() => {
             requestContextMenuItems([
               {
-                name: "Удалить тэг",
+                name: "Удалить метку",
                 onClick: () => {
-                  if (confirm(`Вы уверены, что хотите удалить тэг "${tag}"?`)) {
+                  if (confirm(`Вы уверены, что хотите удалить метку "${tag}"?`)) {
                     tags.update(tags => {
                       tags.splice(index, 1);
                     });
