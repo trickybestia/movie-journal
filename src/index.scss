@@ -35,14 +35,3 @@ body,
 .pure-menu-link:hover {
   background-color: custom.$selection-background-color;
 }
-
-.contexify {
-  --contexify-menu-radius: 0;
-  --contexify-menu-shadow: 0;
-  --contexify-activeItem-radius: 0;
-  --contexify-menu-bgColor: #{custom.$secondary-background-color};
-  --contexify-menu-padding: 2px;
-  --contexify-itemContent-padding: 4px;
-  --contexify-activeItem-bgColor: #{custom.$selection-background-color};
-  --contexify-activeItem-color: #333;
-}

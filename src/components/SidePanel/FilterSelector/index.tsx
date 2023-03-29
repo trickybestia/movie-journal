@@ -1,6 +1,6 @@
-import React, { MouseEventHandler } from "react";
-import { Item, Menu, PredicateParams, useContextMenu } from "react-contexify";
+import React from "react";
 import * as f from "filters";
+import useDynamicContextMenu from "hooks/use-dynamic-context-menu";
 import ParentState from "parent-state";
 
 import styles from "./index.module.scss";
@@ -12,18 +12,8 @@ type Props = {
   selectedFilters: ParentState<readonly f.Filter[]>;
 };
 
-const CONTEXT_MENU_ID = "FilterSelectorContextMenu";
-
-type ContextMenuProps = {
-  filterName: string;
-};
-
 const FilterSelector: React.FC<Props> = ({ tags, selectedFilters, addTag, removeTag }: Props) => {
-  const { show: showContextMenu } = useContextMenu({ id: CONTEXT_MENU_ID });
-
-  const isContextMenuRemoveButtonDisabled = ({ props }: PredicateParams<ContextMenuProps>): boolean => {
-    return props === undefined;
-  };
+  const { requestContextMenuItems } = useDynamicContextMenu();
 
   const filters = [
     { name: "Просмотренные", filter: f.watched, canRemove: false },
@@ -33,71 +23,56 @@ const FilterSelector: React.FC<Props> = ({ tags, selectedFilters, addTag, remove
   return (
     <div
       className={styles.FilterSelector}
-      onContextMenu={event => {
-        if (event.currentTarget === event.target) showContextMenu({ event: event });
+      onContextMenu={() => {
+        requestContextMenuItems([
+          {
+            name: "Добавить тэг",
+            onClick: () => {
+              const tag = prompt("Введите новый тэг");
+
+              if (tag !== null) addTag(tag);
+            }
+          }
+        ]);
       }}
     >
-      {filters.map(({ name, filter, canRemove }, index) => {
-        let onContextMenu: MouseEventHandler<HTMLDivElement> | undefined = event => showContextMenu({ event: event });
-
-        if (canRemove) {
-          onContextMenu = event => {
-            showContextMenu({
-              event,
-              props: {
-                filterName: name
-              }
-            });
-          };
-        }
-
-        return (
-          <div className={styles.Filter} key={index} onContextMenu={onContextMenu}>
-            <input
-              type="checkbox"
-              onClick={() => {
-                const filterIndex = selectedFilters.state.indexOf(filter);
-
-                selectedFilters.update(selectedFilters => {
-                  if (filterIndex === -1) {
-                    selectedFilters.push(filter);
-                  } else {
-                    selectedFilters.splice(filterIndex, 1);
+      {filters.map(({ name, filter, canRemove }, index) => (
+        <div
+          className={styles.Filter}
+          key={index}
+          onContextMenu={() => {
+            requestContextMenuItems([
+              {
+                name: "Удалить тэг",
+                disabled: !canRemove,
+                onClick: () => {
+                  if (confirm(`Вы уверены, что хотите удалить тэг "${name}"?`)) {
+                    removeTag(name);
                   }
-                });
-              }}
-              checked={selectedFilters.state.indexOf(filter) !== -1}
-              readOnly={true}
-            />
-            <p>{name}</p>
-          </div>
-        );
-      })}
-      <Menu id={CONTEXT_MENU_ID} animation={false}>
-        <Item
-          onClick={() => {
-            const tag = prompt("Введите новый тэг");
-
-            if (tag !== null) addTag(tag);
-          }}
-        >
-          Создать тэг
-        </Item>
-        <Item
-          disabled={isContextMenuRemoveButtonDisabled}
-          onClick={({
-            props: menuProps // When named just props, some React's diagnostic considers it as component props and shows errors
-          }: PredicateParams<ContextMenuProps>) => {
-            if (menuProps !== undefined) {
-              if (confirm(`Вы уверены, что хотите удалить тэг "${menuProps.filterName}"?`)) {
-                removeTag(menuProps.filterName);
+                }
               }
-            }
+            ]);
           }}
         >
-          Удалить тэг
-        </Item>
-      </Menu>
+          <input
+            type="checkbox"
+            onClick={() => {
+              const filterIndex = selectedFilters.state.indexOf(filter);
+
+              selectedFilters.update(selectedFilters => {
+                if (filterIndex === -1) {
+                  selectedFilters.push(filter);
+                } else {
+                  selectedFilters.splice(filterIndex, 1);
+                }
+              });
+            }}
+            checked={selectedFilters.state.indexOf(filter) !== -1}
+            readOnly={true}
+          />
+          <p>{name}</p>
+        </div>
+      ))}
     </div>
   );
 };

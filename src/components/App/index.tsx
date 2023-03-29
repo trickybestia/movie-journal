@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Filter, unwatched, watched } from "filters";
+import useStateWithSetCallback from "hooks/use-context-with-set-callback";
+import { DynamicContextMenuContext } from "hooks/use-dynamic-context-menu";
 import produce from "immer";
 import { ModelType, MovieType, SeasonType } from "model";
 import { newModel } from "model/new";
@@ -7,8 +9,8 @@ import { getModelStats } from "model/stats";
 import ParentState from "parent-state";
 import { BlobUrlMapper, BlobUrlMapperContext } from "utils/blob-url-mapper";
 import { loadModel, saveModel } from "utils/save-model";
-import useStateWithSetCallback from "utils/use-context-with-set-callback";
 
+import ContextMenu, { ContextMenuItemProps } from "components/ContextMenu";
 import CompactMovieView from "components/MovieView/CompactMovieView";
 import FullMovieView from "components/MovieView/FullMovieView";
 import SidePanel from "components/SidePanel";
@@ -73,6 +75,8 @@ const App: React.FC = () => {
   const [modelFileName, setModelFileName] = useState(NEW_MODEL_FILE_NAME);
   const [changedSinceLastSave, setChangedSinceLastSave] = useState(true);
   const [compactView, setCompactView] = useState(() => false);
+  const [requestedContextMenuItems] = useState([] as ContextMenuItemProps[]);
+  const [contextMenu, setContextMenu] = useState(undefined as JSX.Element | undefined);
 
   const toolBarButtons: ToolBarProps["buttons"] = [
     {
@@ -129,69 +133,90 @@ const App: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState(() => [watched, unwatched] as readonly Filter[]);
 
   return (
-    <div className={styles.App}>
-      <header>
-        <ToolBar buttons={toolBarButtons} />
-      </header>
-      <div className={styles.MainWrapper}>
-        <div className={styles.SidePanel}>
-          <SidePanel
-            tags={model.tags}
-            selectedFilters={new ParentState(selectedFilters, setSelectedFilters)}
-            addTag={tag => {
-              if (model.tags.indexOf(tag) === -1)
-                setModel(
-                  produce(model, model => {
-                    model.tags.push(tag);
-                  })
-                );
-            }}
-            removeTag={tag => {
-              const tagIndex = model.tags.indexOf(tag);
+    <DynamicContextMenuContext.Provider
+      value={items => {
+        requestedContextMenuItems.push(...items);
+      }}
+    >
+      <div
+        onClick={() => setContextMenu(undefined)}
+        className={styles.App}
+        onContextMenu={event => {
+          if (requestedContextMenuItems.length !== 0) {
+            setContextMenu(
+              <ContextMenu left={event.clientX} top={event.clientY} items={requestedContextMenuItems.slice()} />
+            );
+          }
 
-              if (tagIndex !== -1) {
-                setModel(
-                  produce(model, model => {
-                    model.tags.splice(tagIndex, 1);
+          requestedContextMenuItems.length = 0;
 
-                    model.movies.forEach(movie => {
-                      const movieTagIndex = movie.tags.indexOf(tag);
-
-                      if (movieTagIndex !== -1) movie.tags.splice(movieTagIndex, 1);
-                    });
-                  })
-                );
-              }
-            }}
-          />
-        </div>
-        <main>
-          <BlobUrlMapperContext.Provider value={blobUrlMapper}>
-            <MovieView
-              key={modelFileName + (changedSinceLastSave ? "1" : "0")}
-              filters={selectedFilters}
-              movies={
-                new ParentState<readonly MovieType[]>(model.movies, newMovies =>
+          event.preventDefault();
+        }}
+      >
+        <header>
+          <ToolBar buttons={toolBarButtons} />
+        </header>
+        <div className={styles.MainWrapper}>
+          <div className={styles.SidePanel}>
+            <SidePanel
+              tags={model.tags}
+              selectedFilters={new ParentState(selectedFilters, setSelectedFilters)}
+              addTag={tag => {
+                if (model.tags.indexOf(tag) === -1)
                   setModel(
                     produce(model, model => {
-                      model.movies = newMovies.slice();
+                      model.tags.push(tag);
                     })
-                  )
-                )
-              }
-            />
-          </BlobUrlMapperContext.Provider>
-        </main>
-      </div>
+                  );
+              }}
+              removeTag={tag => {
+                const tagIndex = model.tags.indexOf(tag);
 
-      <footer>
-        <StatusBar
-          fileName={modelFileName}
-          changedSinceLastSave={changedSinceLastSave}
-          modelStats={getModelStats(model)}
-        />
-      </footer>
-    </div>
+                if (tagIndex !== -1) {
+                  setModel(
+                    produce(model, model => {
+                      model.tags.splice(tagIndex, 1);
+
+                      model.movies.forEach(movie => {
+                        const movieTagIndex = movie.tags.indexOf(tag);
+
+                        if (movieTagIndex !== -1) movie.tags.splice(movieTagIndex, 1);
+                      });
+                    })
+                  );
+                }
+              }}
+            />
+          </div>
+          <main>
+            <BlobUrlMapperContext.Provider value={blobUrlMapper}>
+              <MovieView
+                key={modelFileName + (changedSinceLastSave ? "1" : "0")}
+                filters={selectedFilters}
+                movies={
+                  new ParentState<readonly MovieType[]>(model.movies, newMovies =>
+                    setModel(
+                      produce(model, model => {
+                        model.movies = newMovies.slice();
+                      })
+                    )
+                  )
+                }
+              />
+            </BlobUrlMapperContext.Provider>
+          </main>
+        </div>
+
+        <footer>
+          <StatusBar
+            fileName={modelFileName}
+            changedSinceLastSave={changedSinceLastSave}
+            modelStats={getModelStats(model)}
+          />
+        </footer>
+        {contextMenu}
+      </div>
+    </DynamicContextMenuContext.Provider>
   );
 };
 

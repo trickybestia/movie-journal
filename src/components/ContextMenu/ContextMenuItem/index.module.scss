@@ -1,0 +1,23 @@
+@use "custom.scss";
+
+.ContextMenuItem {
+  padding: 4px;
+
+  p {
+    pointer-events: none;
+    color: #333;
+  }
+}
+
+.ContextMenuItem:not(.disabled):hover {
+  background-color: custom.$selection-background-color;
+}
+
+.ContextMenuItem.disabled {
+  pointer-events: none;
+
+  p {
+    pointer-events: none;
+    color: #777;
+  }
+}

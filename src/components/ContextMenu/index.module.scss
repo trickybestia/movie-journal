@@ -1,0 +1,9 @@
+@use "custom.scss";
+
+.ContextMenu {
+  position: absolute;
+
+  padding: 2px;
+
+  background-color: custom.$secondary-background-color;
+}

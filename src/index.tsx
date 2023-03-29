@@ -5,7 +5,6 @@ import { enableMapSet } from "immer";
 import App from "components/App";
 
 import "purecss";
-import "react-contexify/ReactContexify.css";
 import "./index.scss";
 
 enableMapSet();
