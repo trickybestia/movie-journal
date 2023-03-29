@@ -1,7 +1,7 @@
 import { ModelType } from "model";
 
 const newModel = (): ModelType => {
-  return { movies: [], tags: [] };
+  return { movies: [] };
 };
 
 export { newModel };

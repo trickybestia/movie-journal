@@ -24,8 +24,7 @@ const Movie = t.exact(
 
 const Model = t.exact(
   t.type({
-    movies: t.array(Movie),
-    tags: t.array(t.string)
+    movies: t.array(Movie)
   })
 );
 

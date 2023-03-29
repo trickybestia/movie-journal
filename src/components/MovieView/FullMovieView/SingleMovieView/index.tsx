@@ -5,6 +5,7 @@ import ParentState from "parent-state";
 
 import MoviePreview from "./MoviePreview";
 import SeasonView from "./SeasonView";
+import TagView from "./TagView";
 
 import styles from "./index.module.scss";
 
@@ -60,10 +61,40 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
   }
 
   return (
-    <div className={styles.SingleMovieView}>
+    <div
+      className={styles.SingleMovieView}
+      onContextMenu={() => {
+        requestContextMenuItems([
+          {
+            name: "Добавить тэг",
+            onClick: () => {
+              const tag = prompt("Введите новый тэг");
+
+              if (tag !== null && movie.state.tags.indexOf(tag) === -1) {
+                movie.update(movie => {
+                  movie.tags.push(tag);
+                });
+              }
+            }
+          }
+        ]);
+      }}
+    >
       <div>
         <MoviePreview movie={movie} selectedSeason={new ParentState(selectedSeason, setSelectedSeason)} />
       </div>
+
+      {movie.state.tags.length !== 0 && (
+        <TagView
+          tags={
+            new ParentState(movie.state.tags, tags => {
+              movie.update(movie => {
+                movie.tags = tags;
+              });
+            })
+          }
+        />
+      )}
 
       <div className={styles.Info}>
         {title}

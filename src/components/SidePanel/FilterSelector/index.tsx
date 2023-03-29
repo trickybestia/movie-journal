@@ -1,59 +1,24 @@
 import React from "react";
 import * as f from "filters";
-import useDynamicContextMenu from "hooks/use-dynamic-context-menu";
 import ParentState from "parent-state";
 
 import styles from "./index.module.scss";
 
 type Props = {
   tags: readonly string[];
-  addTag: (tag: string) => void;
-  removeTag: (tag: string) => void;
   selectedFilters: ParentState<readonly f.Filter[]>;
 };
 
-const FilterSelector: React.FC<Props> = ({ tags, selectedFilters, addTag, removeTag }: Props) => {
-  const { requestContextMenuItems } = useDynamicContextMenu();
-
+const FilterSelector: React.FC<Props> = ({ tags, selectedFilters }: Props) => {
   const filters = [
-    { name: "Просмотренные", filter: f.watched, canRemove: false },
-    { name: "Непросмотренные", filter: f.unwatched, canRemove: false }
-  ].concat(tags.map(tag => ({ name: tag, filter: f.withTag(tag), canRemove: true })));
+    { name: "Просмотренные", filter: f.watched },
+    { name: "Непросмотренные", filter: f.unwatched }
+  ].concat(tags.map(tag => ({ name: tag, filter: f.withTag(tag) })));
 
   return (
-    <div
-      className={styles.FilterSelector}
-      onContextMenu={() => {
-        requestContextMenuItems([
-          {
-            name: "Добавить тэг",
-            onClick: () => {
-              const tag = prompt("Введите новый тэг");
-
-              if (tag !== null) addTag(tag);
-            }
-          }
-        ]);
-      }}
-    >
-      {filters.map(({ name, filter, canRemove }, index) => (
-        <div
-          className={styles.Filter}
-          key={index}
-          onContextMenu={() => {
-            requestContextMenuItems([
-              {
-                name: "Удалить тэг",
-                disabled: !canRemove,
-                onClick: () => {
-                  if (confirm(`Вы уверены, что хотите удалить тэг "${name}"?`)) {
-                    removeTag(name);
-                  }
-                }
-              }
-            ]);
-          }}
-        >
+    <div className={styles.FilterSelector}>
+      {filters.map(({ name, filter }, index) => (
+        <div className={styles.Filter} key={index}>
           <input
             type="checkbox"
             onClick={() => {

@@ -1,0 +1,12 @@
+.TagView {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.25em;
+
+  .Tag {
+    padding: 3px;
+    background-color: #333;
+    color: white;
+  }
+}

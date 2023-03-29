@@ -129,6 +129,18 @@ const App: React.FC = () => {
     }
   ];
 
+  const getTags = (): string[] => {
+    const result: Set<string> = new Set();
+
+    model.movies.forEach(movie => {
+      movie.tags.forEach(tag => {
+        result.add(tag);
+      });
+    });
+
+    return Array.from(result);
+  };
+
   const MovieView = compactView ? CompactMovieView : FullMovieView;
 
   const [selectedFilters, setSelectedFilters] = useState(() => [watched, unwatched] as readonly Filter[]);
@@ -159,35 +171,7 @@ const App: React.FC = () => {
         </header>
         <div className={styles.MainWrapper}>
           <div className={styles.SidePanel}>
-            <SidePanel
-              tags={model.tags}
-              selectedFilters={new ParentState(selectedFilters, setSelectedFilters)}
-              addTag={tag => {
-                if (model.tags.indexOf(tag) === -1)
-                  setModel(
-                    produce(model, model => {
-                      model.tags.push(tag);
-                    })
-                  );
-              }}
-              removeTag={tag => {
-                const tagIndex = model.tags.indexOf(tag);
-
-                if (tagIndex !== -1) {
-                  setModel(
-                    produce(model, model => {
-                      model.tags.splice(tagIndex, 1);
-
-                      model.movies.forEach(movie => {
-                        const movieTagIndex = movie.tags.indexOf(tag);
-
-                        if (movieTagIndex !== -1) movie.tags.splice(movieTagIndex, 1);
-                      });
-                    })
-                  );
-                }
-              }}
-            />
+            <SidePanel tags={getTags()} selectedFilters={new ParentState(selectedFilters, setSelectedFilters)} />
           </div>
           <main>
             <BlobUrlMapperContext.Provider value={blobUrlMapper}>
