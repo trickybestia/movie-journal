@@ -68,7 +68,7 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
           {
             name: "Добавить метку",
             onClick: () => {
-              const tag = prompt("Введите новый метку");
+              const tag = prompt("Введите новую метку");
 
               if (tag !== null && movie.state.tags.indexOf(tag) === -1) {
                 movie.update(movie => {
