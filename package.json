@@ -2,6 +2,7 @@
   "name": "movie-journal",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://trickybestia.github.io/movie-journal/",
   "dependencies": {
     "file-saver": "^2.0.5",
     "fp-ts": "^2.13.1",
