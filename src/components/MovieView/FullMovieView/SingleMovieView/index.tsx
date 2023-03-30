@@ -106,7 +106,21 @@ const SingleMovieView: React.FC<Props> = ({ movie }: Props) => {
                 name: "Добавить сезон",
                 onClick: () =>
                   movie.update(movie => {
-                    movie.seasons.push({ title: "Новый сезон", image: undefined, episodes: [] });
+                    try {
+                      const episodesCountInput = prompt("Введите количество серий: ", "0");
+
+                      if (episodesCountInput === null) return;
+
+                      const episodesCount = Number.parseInt(episodesCountInput);
+
+                      const episodes: Array<boolean> = [];
+
+                      for (let i = 0; i != episodesCount; i++) episodes.push(false);
+
+                      movie.seasons.push({ title: "Новый сезон", image: undefined, episodes: episodes });
+                    } catch {
+                      /* empty */
+                    }
                   })
               }
             ]);
