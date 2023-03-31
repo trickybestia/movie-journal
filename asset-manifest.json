@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/movie-journal/static/css/main.fa76486f.css",
-    "main.js": "/movie-journal/static/js/main.d15d8861.js",
+    "main.css": "/movie-journal/static/css/main.f378ed1f.css",
+    "main.js": "/movie-journal/static/js/main.c5ff1800.js",
     "index.html": "/movie-journal/index.html",
     "static/media/triangle.svg": "/movie-journal/static/media/triangle.56a4dbd305986471eadf54023d019b70.svg",
-    "main.fa76486f.css.map": "/movie-journal/static/css/main.fa76486f.css.map",
-    "main.d15d8861.js.map": "/movie-journal/static/js/main.d15d8861.js.map"
+    "main.f378ed1f.css.map": "/movie-journal/static/css/main.f378ed1f.css.map",
+    "main.c5ff1800.js.map": "/movie-journal/static/js/main.c5ff1800.js.map"
   },
   "entrypoints": [
-    "static/css/main.fa76486f.css",
-    "static/js/main.d15d8861.js"
+    "static/css/main.f378ed1f.css",
+    "static/js/main.c5ff1800.js"
   ]
 }
