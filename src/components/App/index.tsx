@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Filter, unwatched, watched } from "filters";
 import useStateWithSetCallback from "hooks/use-context-with-set-callback";
 import { DynamicContextMenuContext } from "hooks/use-dynamic-context-menu";
@@ -78,6 +78,10 @@ const App: React.FC = () => {
   const [compactView, setCompactView] = useState(() => false);
   const [requestedContextMenuItems] = useState([] as ContextMenuItemProps[]);
   const [contextMenu, setContextMenu] = useState(undefined as JSX.Element | undefined);
+
+  useEffect(() => {
+    document.title = "Дневник фильмов - " + modelFileName;
+  });
 
   const toolBarButtons: ToolBarProps["buttons"] = [
     {
