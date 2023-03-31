@@ -11,8 +11,7 @@ import { BlobUrlMapper, BlobUrlMapperContext } from "utils/blob-url-mapper";
 import { loadModel, saveModel } from "utils/save-model";
 
 import ContextMenu, { ContextMenuItemProps } from "components/ContextMenu";
-import CompactMovieView from "components/MovieView/CompactMovieView";
-import FullMovieView from "components/MovieView/FullMovieView";
+import MovieView from "components/MovieView";
 import SidePanel from "components/SidePanel";
 import StatusBar from "components/StatusBar";
 import ToolBar, { Props as ToolBarProps } from "components/ToolBar";
@@ -75,7 +74,6 @@ const App: React.FC = () => {
   const [model, setModel] = useStateWithSetCallback(createModel, setModelCallback);
   const [modelFileName, setModelFileName] = useState(NEW_MODEL_FILE_NAME);
   const [changedSinceLastSave, setChangedSinceLastSave] = useState(true);
-  const [compactView, setCompactView] = useState(() => false);
   const [requestedContextMenuItems] = useState([] as ContextMenuItemProps[]);
   const [contextMenu, setContextMenu] = useState(undefined as JSX.Element | undefined);
 
@@ -128,17 +126,6 @@ const App: React.FC = () => {
           }
         }
       ]
-    },
-    {
-      title: "Вид",
-      items: [
-        {
-          kind: "checkbox",
-          title: "Компактный вид",
-          checked: compactView,
-          onClick: () => setCompactView(!compactView)
-        }
-      ]
     }
   ];
 
@@ -153,8 +140,6 @@ const App: React.FC = () => {
 
     return Array.from(result);
   };
-
-  const MovieView = compactView ? CompactMovieView : FullMovieView;
 
   const [selectedFilters, setSelectedFilters] = useState(() => [watched, unwatched] as readonly Filter[]);
 
